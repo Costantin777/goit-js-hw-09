@@ -1,13 +1,12 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-
 const images = [
   {
     preview:
-      "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820__480.jpg",
+      "https://cdn.pixabay.com/photo/2019/05/14/16/43/orchids-4202820__480.jpg",
     original:
-      "https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820_1280.jpg",
+      "https://cdn.pixabay.com/photo/2019/05/14/16/43/orchids-4202820_1280.jpg",
     description: "Hokkaido Flower",
   },
   {
@@ -94,7 +93,7 @@ gallery.appendChild(fragment);
 const lightbox = new SimpleLightbox('.gallery a', {
   captions: true,
   captionDelay: 250,
-  captionPosition: 'bottom', 
-  captionType: 'attr', 
-  captionsData: 'alt', 
+  captionPosition: 'bottom',
+  captionType: 'attr',
+  captionsData: 'alt',
 });
