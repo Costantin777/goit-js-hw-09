@@ -1,32 +1,34 @@
+const STORAGE_KEY = 'feedback-form-state';
 const form = document.querySelector('.feedback-form');
-const storageKey = 'feedback-form-state';
 
-const data = form => {
+function readFormData(form) {
   const email = form.email.value;
   const message = form.message.value;
-  return {
-    email,
-    message,
-  };
-};
-
-form.addEventListener('input', event => {
-  localStorage.setItem(storageKey, JSON.stringify(data(form)));
-});
-
-const dataFromStorage = localStorage.getItem(storageKey);
-
-if (dataFromStorage) {
-  const object = JSON.parse(dataFromStorage);
-  form.email.value = object.email;
-  form.message.value = object.message;
+  return { email, message };
+}
+const rowData = localStorage.getItem(STORAGE_KEY);
+if (rowData) {
+  const data = JSON.parse(rowData);
+  form.email.value = data.email.trim();
+  form.message.value = data.message.trim();
+}
+function inputForm(event) {
+  event.preventDefault();
+  const data = readFormData(event.currentTarget);
+  const jsonData = JSON.stringify(data);
+  localStorage.setItem(STORAGE_KEY, jsonData);
 }
 
-form.addEventListener('submit', event => {
+function resetForm(event) {
   event.preventDefault();
-  if (localStorage) {
-    console.log(JSON.parse(dataFromStorage));
+  const rowData = localStorage.getItem(STORAGE_KEY);
+
+  if (rowData) {
+    console.log(rowData);
   }
-  localStorage.clear();
+
+  localStorage.removeItem(STORAGE_KEY);
   form.reset();
-});
+}
+form.addEventListener('input', inputForm);
+form.addEventListener('submit', resetForm);
