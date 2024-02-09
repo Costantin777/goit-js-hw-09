@@ -1,7 +1,24 @@
-import SimpleLightbox from 'simplelightbox';
-// import 'simplelightbox/dist/simple-lightbox.min.css';
-import 'simplelightbox/dist/simple-lightbox.css';
 
+// 'use strict';  // при модулях строгий режим включен по умолчанию
+
+/**
+  |============================
+  | import library
+  |============================
+*/
+import SimpleLightbox from 'simplelightbox';
+/**
+  |============================
+  | Import css liblary
+  |============================
+*/
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
+/**
+  |============================
+  | Gallery items
+  |============================
+*/
 const images = [
   {
     preview:
@@ -68,32 +85,37 @@ const images = [
   },
 ];
 
-const container = document.querySelector('.gallery');
-container.innerHTML = createGalleryMarkup(images);
+/**
+  |============================
+  | Gallery markup and add DOM
+  |============================
+*/
+const galleryImg = document.querySelector('.gallery');
+galleryImg.insertAdjacentHTML(
+  'beforeend',
+  images.reduce(
+  (html, { preview, original, description }) =>
+    html +
+    `<li class="gallery-item">
+  <a class="gallery-link" href="${original}">
+    <img
+      class="gallery-image"
+      src="${preview}"
+      alt="${description}"  
+      />
+  </a>
+</li>`,
+    ''
+  )
+);
 
-function createGalleryMarkup(images) {
-  return images
-    .map(
-      ({ preview, original, description }) => `<li class="gallery-item">
-                        <a class="gallery-link" href="${original}">
-                            <img
-                            class="gallery-image"
-                            src="${preview}"
-                            alt="${description}"
-                            />
-                        </a>
-                        </li>
-`
-    )
-    .join('');
-}
-
-let gallery = new SimpleLightbox('.gallery a', {
-  background: 'rgba(46, 47, 66, 0.8)',
+/**
+  |============================
+  | library SimpleLightbox
+  |============================
+*/
+const lightbox = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
   captionsData: 'alt',
 });
 
-gallery.on('error.simplelightbox', function (e) {
-  console.log(e);
-});
