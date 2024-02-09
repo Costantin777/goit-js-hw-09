@@ -1,62 +1,32 @@
+const form = document.querySelector('.feedback-form');
+const storageKey = 'feedback-form-state';
 
-const STORAGE_KEY = "feedback-form-state";
-const form = document.querySelector(".feedback-form");
+const data = form => {
+  const email = form.email.value;
+  const message = form.message.value;
+  return {
+    email,
+    message,
+  };
+};
 
-
-
-  // "Function to check if all form fields are filled"
-  function isFormFilled() {
-    const formData = new FormData(form);
-    return Array.from(formData.values()).every((value) => value.trim() !== "");
-  }
-  
-
-try {
-  const initialForm = JSON.parse(localStorage.getItem(STORAGE_KEY));
-
-  Array.from(form.elements).forEach((element) => {
-    const storedValue = initialForm[element.name];
-    if (storedValue) {
-      element.value = storedValue;
-    }
-  });
-} catch (error) {
-  console.log("parse error");
-}
-
-form.addEventListener("input", () => {
- 
-    const formData = new FormData(form);
-    const formObject = {};
-
-    formData.forEach((value, key) => {
-      formObject[key] = value.trim();
-    });
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(formObject));
-
+form.addEventListener('input', event => {
+  localStorage.setItem(storageKey, JSON.stringify(data(form)));
 });
 
-form.addEventListener("submit", (event) => {
+const dataFromStorage = localStorage.getItem(storageKey);
+
+if (dataFromStorage) {
+  const object = JSON.parse(dataFromStorage);
+  form.email.value = object.email;
+  form.message.value = object.message;
+}
+
+form.addEventListener('submit', event => {
   event.preventDefault();
-
-  const emailInput = form.elements["email"];
-  const messageInput = form.elements["message"];
-
-
-  if (emailInput.checkValidity() && messageInput.checkValidity() && isFormFilled()) {
-    const formData = new FormData(form);
-    const formObject = {};
-
-    formData.forEach((value, key) => {
-      formObject[key] = value.trim();
-    });
-
-    console.log("Object form:", formObject);
-
-    localStorage.removeItem(STORAGE_KEY);
-    form.reset();
-  } else {
-    alert ("Enter your email and message, both input fields are mandatory")
+  if (localStorage) {
+    console.log(JSON.parse(dataFromStorage));
   }
+  localStorage.clear();
+  form.reset();
 });
